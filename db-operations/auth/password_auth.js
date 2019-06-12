@@ -13,7 +13,7 @@ const FailedWithReason_Dev = require('../../data-structures/Result').FailedWithR
 const logger = require('../../logging/logger');
 // const and config
 const ErrorCode = require('../../data-structures/ErrorCode');
-
+const VALID_CLIENTS = require('./valid_clients');
 function auth(username, password, callback){
     userDB.findOne({email: username}, (err, _user)=>{
         if(err){
@@ -35,5 +35,12 @@ function auth(username, password, callback){
         }
     });
 }
-
+function verify_client_id(client_id){
+    if(VALID_CLIENTS[client_id] === "OK"){
+        return SuccessedWithValue(client_id);
+    }else{
+        return FailedWithReason(`Invalid client id ${client_id}`, ErrorCode.InvalidClientId);
+    }
+}
 module.exports.auth = auth;
+moduel.exports.verify_client_id = verify_client_id;

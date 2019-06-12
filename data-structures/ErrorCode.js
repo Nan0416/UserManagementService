@@ -4,5 +4,6 @@ const ErrorCode = {
     EmailRegistered: 800,
     UserNotExisted: 410,
     InvalidEmailOrPassword: 402,
-}
+    InvalidClientId: 403,
+};
 module.exports = ErrorCode;
