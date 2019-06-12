@@ -1,10 +1,5 @@
 const appConfig = require('../app.config');
-const ErrorCode = {
-    UnknownError: -1,
-    Success:0,
-    EmailRegistered: 800,
-    UserNotExisted: 410,
-}
+
 
 
 
@@ -43,4 +38,3 @@ module.exports.GetEmptyResult = GetEmptyResult;
 module.exports.SuccessedWithValue = SuccessedWithValue;
 module.exports.FailedWithReason = FailedWithReason;
 module.exports.FailedWithReason_Dev = FailedWithReason_Dev;
-module.exports.ErrorCode = ErrorCode;
