@@ -1,0 +1,25 @@
+{
+  "name": "monitorauth",
+  "version": "1.0.0",
+  "description": "Provide Authentication, Privilege Management And Agent Instance Management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nan0416/MonitorAuth.git"
+  },
+  "author": "Nan Qin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nan0416/MonitorAuth/issues"
+  },
+  "homepage": "https://github.com/Nan0416/MonitorAuth#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.5.14",
+    "tracer": "^0.9.8"
+  }
+}
