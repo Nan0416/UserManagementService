@@ -1,12 +1,12 @@
 const appConfig = require('../app.config');
-
+const ErrorCode = require('./ErrorCode');
 
 
 
 function GetEmptyResult(){
     return {
         success: false,
-        error_code: -1,
+        error_code: ErrorCode.UnknownError,
         reason: "The result is not initialized",
         value: null,
     }
@@ -16,22 +16,23 @@ function SuccessedWithValue(value){
     result.success = true;
     result.reason = null;
     result.value = value;
-    result.error_code = 0;
+    result.error_code = ErrorCode.Success;
     return result;
 }
 
-function FailedWithReason(reason, code = -1){
+function FailedWithReason(reason, code = ErrorCode.UnknownError){
     let result = GetEmptyResult();
     result.success = false;
     result.reason = reason;
     result.value = null;
+    result.error_code = code;
     return result;
 }
-function FailedWithReason_Dev(reason){
+function FailedWithReason_Dev(reason, code = ErrorCode.UnknownError){
     if(appConfig.env.toLowerCase() === "dev"){
-        return FailedWithReason(reason);
+        return FailedWithReason(reason, code);
     }else{
-        return FailedWithReason("Unknown");
+        return FailedWithReason("Unknown", ErrorCode.UnknownError);
     }
 }
 module.exports.GetEmptyResult = GetEmptyResult;

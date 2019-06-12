@@ -3,6 +3,6 @@ const ErrorCode = {
     Success:0,
     EmailRegistered: 800,
     UserNotExisted: 410,
-    InvalidEmailOrPassword: 404,
+    InvalidEmailOrPassword: 402,
 }
 module.exports = ErrorCode;
