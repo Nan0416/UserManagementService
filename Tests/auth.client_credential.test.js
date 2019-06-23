@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 // self-defined
-const auth = require('../db-operations/auth/password_auth').auth;
+const auth = require('../db-operations/auth/client_credentials_auth').auth;
 
 // constants and configurations
 const appConfig = require('../app.config');
@@ -14,7 +14,7 @@ const mongodb_url = appConfig['mongodb-url'];
 const connect = mongoose.connect(mongodb_url, { useNewUrlParser: true });
 connect.then((db)=>{
         console.log("[mongodb] connected correctly to server");
-        auth("3be0cb57-29be-4362-be24-2625e51d4984", "nq_06112019_02@registeruser.com", "@uthPassword!", console.log);
+        auth("87a029b2-ba9f-493a-8a0e-6bf6c614c2c9", "wrjieurh3e3iu32e23e23m", console.log);
     }, (err)=>{
         console.log("[mongodb] connection failed")
         console.log(err);

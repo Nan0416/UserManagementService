@@ -11,12 +11,15 @@ function GetEmptyResult(){
         value: null,
     }
 }
-function SuccessedWithValue(value){
+function SuccessedWithValue(value, token = null){
     let result = GetEmptyResult();
     result.success = true;
     result.reason = null;
     result.value = value;
     result.error_code = ErrorCode.Success;
+    if(token != null){
+        result.token = token;
+    }
     return result;
 }
 

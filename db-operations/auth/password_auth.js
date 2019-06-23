@@ -10,37 +10,42 @@ const SuccessedWithValue = require('../../data-structures/Result').SuccessedWith
 const FailedWithReason = require('../../data-structures/Result').FailedWithReason;
 const FailedWithReason_Dev = require('../../data-structures/Result').FailedWithReason_Dev;
 
+const generate_token = require('./token_management').generate_token;
 const logger = require('../../logging/logger');
 // const and config
 const ErrorCode = require('../../data-structures/ErrorCode');
-const VALID_CLIENTS = require('./valid_clients');
-function auth(username, password, callback){
+const verifyClient = require('./valid_clients').verifyClient;
+
+
+function auth(client_id, username, password, callback){
+    if(!verifyClient(client_id, 'password')){
+        return callback(FailedWithReason(`Invalid client id.`, ErrorCode.InvalidClientId));
+    }
     userDB.findOne({email: username}, (err, _user)=>{
         if(err){
-            logger.log(err.message);
+            logger.error(err.message);
             callback(FailedWithReason_Dev(err.message));
         }else if(_user == null){
+            logger.info(`Email ${username} does not existed.`);
             callback(FailedWithReason(`Invalid email or password`, ErrorCode.InvalidEmailOrPassword));
         }else{
             bcrypt.compare(password, _user.toObject().hash_password, function(err, res) {
                 if(err){
-                    logger.log(err.message);
+                    logger.error(err.message);
                     callback(FailedWithReason_Dev(err.message));
                 }else if(!res){
+                    logger.info(`Invalid password for ${username}.`);
                     callback(FailedWithReason(`Invalid email or password`, ErrorCode.InvalidEmailOrPassword));
                 }else{
-                    callback(SuccessedWithValue("Success"));
+                    callback(SuccessedWithValue({
+                        user_id: _user._id.toString(),
+                        client_id: client_id,
+                        grant_type: 'password'
+                    }));
                 }
             });
         }
     });
 }
-function verify_client_id(client_id){
-    if(VALID_CLIENTS[client_id] === "OK"){
-        return SuccessedWithValue(client_id);
-    }else{
-        return FailedWithReason(`Invalid client id ${client_id}`, ErrorCode.InvalidClientId);
-    }
-}
+
 module.exports.auth = auth;
-moduel.exports.verify_client_id = verify_client_id;

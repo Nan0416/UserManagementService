@@ -5,5 +5,10 @@ const ErrorCode = {
     UserNotExisted: 410,
     InvalidEmailOrPassword: 402,
     InvalidClientId: 403,
+    InvalidClientIdOrCredential: 405,
+    InvalidClientCredential: 409,
+    InvalidToken: 412,
+    InvalidGrantType: 413,
+    MissingFields: 301
 };
 module.exports = ErrorCode;
