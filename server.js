@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 // self-defined
 const signupRoute = require('./routes/user/signup');
 const loginRoute = require('./routes/auth/login');
+const queryUserRouter = require('./routes/user/query');
 // config
 const appConfig = require('./app.config');
 
@@ -30,6 +31,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 const urlprefix = appConfig['urlprefix'];
 app.use(urlprefix + '/user/signup', signupRoute);
 app.use(urlprefix + '/auth/login', loginRoute);
+
+app.use(urlprefix + '/user/query', queryUserRouter);
 
 
 

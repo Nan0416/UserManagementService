@@ -21,10 +21,23 @@ function queryUserByEmail(email, callback){
             logger.log(err.message);
             callback(FailedWithReason_Dev(err.message));
         }else if(_user == null){
-            callback(FailedWithReason(`Cannot find user with email ${email}`));
+            callback(FailedWithReason(`A user with email ${email} does not exist.`));
+        }else{
+            callback(SuccessedWithValue(_user.toObject()));
+        }
+    });
+}
+function queryUserById(id, callback){
+    userDB.findById(id, user_selected_fields, (err, _user)=>{
+        if(err){
+            logger.log(err.message);
+            callback(FailedWithReason_Dev(err.message));
+        }else if(_user == null){
+            callback(FailedWithReason(`User ${id} does not exist.`));
         }else{
             callback(SuccessedWithValue(_user.toObject()));
         }
     });
 }
 module.exports.queryUserByEmail = queryUserByEmail;
+module.exports.queryUserById = queryUserById;

@@ -9,6 +9,9 @@ const ErrorCode = {
     InvalidClientCredential: 409,
     InvalidToken: 412,
     InvalidGrantType: 413,
-    MissingFields: 301
+    InvalidEmailFormat: 414,
+    InvalidUserId: 415,
+    MissingFields: 301,
+    NotImplemented: 900,
 };
 module.exports = ErrorCode;
