@@ -101,8 +101,8 @@ function verify_user(username, password, callback){
     });
 }
 
-function find_user(username, callback){
-    userDB.findOne({username: username}, user_return_fields).lean().exec(callback);
+function find_user(user, callback){
+    userDB.findOne(user, user_return_fields).lean().exec(callback);
 }
 
 

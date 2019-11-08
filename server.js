@@ -10,11 +10,11 @@ const bodyParser = require('body-parser');
 // self-defined
 const signupRoute = require('./router/signup');
 const loginRoute = require('./router/login');
-
+const forgetPasswordRoute = require('./router/forget_password');
 const app = express();
 const server = http.createServer(app);
 const server_config = require('./config').server_config;
-const domain = "localhost";
+
 ////////// middleware setup ////////
 
 app.use(logger('dev'));
@@ -29,8 +29,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 const urlprefix = "/api/v1.0";
 app.use(urlprefix + '/user/signup', signupRoute);
 app.use(urlprefix + '/auth/login', loginRoute);
-
-
+app.use(urlprefix + '/user/forget-password', forgetPasswordRoute);
 
 //////////  database setup //////////
 
