@@ -1,8 +1,6 @@
 const cors = require('cors');
 
-const whitelist = [
-    'http://localhost:5010',
-];
+const whitelist = [];
 
 var corsOptionsDelegate = (req, callback) => {
     var corsOptions;
