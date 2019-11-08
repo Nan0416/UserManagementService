@@ -27,27 +27,30 @@ login_router.route("/")
 
     switch(grant_type){
         case "password":{
-            let username = get_value(req.body, 'username');
-            let password = get_value(req.body, 'password');
-            if(has_null(username, password)){
-                res.statusCode = 400; // bad request;
-                res.json({success: false, reason: "missing fields."});
-                return;
-            }
-
-            if(!verify_client(client_id, grant_type)){
+            if(!verify_client(client_id, "password")){
                 res.statusCode = 400; // bad request;
                 res.json({success: false, reason: "invalid client."});
                 return;
             }
 
-            verify_user(username, password, (err, result)=>{
+            let username = get_value(req.body, 'username');
+            let email = get_value(req.body, 'email');
+            let password = get_value(req.body, 'password');
+            if(password == null || (username == null && email == null)){
+                res.statusCode = 400; // bad request;
+                res.json({success: false, reason: "missing fields."});
+                return;
+            }
+
+            let search_condition = {};
+            if(username != null){
+                search_condition.username = username;
+            }else{
+                search_condition.email = email;
+            }
+            verify_user(search_condition, password, (err, _)=>{
                 if(err){
-                    res.statusCode = 400; // bad request;
-                    res.json({success: false, reason: err.message});
-                }else if(!result){
-                    res.statusCode = 400; // bad request;
-                    res.json({success: false, reason: "invalid password."});
+                    next(err);
                 }else{
                     data = {
                         username: username,

@@ -31,6 +31,14 @@ app.use(urlprefix + '/user/signup', signupRoute);
 app.use(urlprefix + '/auth/login', loginRoute);
 app.use(urlprefix + '/user/forget-password', forgetPasswordRoute);
 
+app.use((err, req, res, next)=>{
+    if(err.statusCode != null){
+        res.statusCode = err.statusCode;
+    }else{
+        res.statusCode = 400;
+    }
+    res.json({success: false, reason: err.message});
+});
 //////////  database setup //////////
 
 mongoose.Promise = bluebird;

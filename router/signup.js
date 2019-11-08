@@ -16,9 +16,10 @@ signup_router.route("/")
 })
 .post(cors.cors_allow_whitelist, (req, res, next)=>{
     let username = get_value(req.body, 'username');
+    let email = get_value(req.body, "email");
     let password = get_value(req.body, 'password');
     let client_id = get_value(req.body, 'client_id');
-    if(has_null(username, password, client_id)){
+    if(has_null(username, email, password, client_id)){
         res.statusCode = 400; // bad request;
         res.json({success: false, reason: "missing fields."});
         return;
@@ -29,12 +30,12 @@ signup_router.route("/")
         return;
     }
     let user = {
-        username: username
+        username: username,
+        email: email,
     }
     register_user(user, password, (err, result)=>{
         if(err != null){
-            res.statusCode = 400; // bad request;
-            res.json({success: false, reason: err.message});
+            next(err);
         }else{
             data = {
                 username: username,

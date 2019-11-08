@@ -45,16 +45,16 @@ reset_password_router.route("/reset")
     });
 });
 
-// this endpint should be rewritten with sending email ...
+
 
 reset_password_router.route("/secret")
 .options(cors.cors_allow_whitelist, (req, res, next) => {
     res.sendStatus(200);
 })
 .post(cors.cors_allow_whitelist, (req, res, next)=>{
-    let username = get_value(req.body, 'username');
+    let email = get_value(req.body, 'email');
     let client_id = get_value(req.body, 'client_id');
-    if(has_null(username, client_id)){
+    if(has_null(email, client_id)){
         res.statusCode = 400; // bad request;
         res.json({success: false, reason: "missing fields."});
         return;
@@ -64,19 +64,17 @@ reset_password_router.route("/secret")
         res.json({success: false, reason: "invalid client."});
         return;
     }
-    let search_condition = {username: username};
-    find_user(search_condition, (err, user)=>{
+    let search_condition = {email: email};
+    find_user(search_condition, (err, result)=>{
         if(err != null){
-            res.statusCode = 500; // bad request;
-            res.json({success: false, reason: err.message});
-        }else if(user == null){
+            next(err);
+        }else if(!result.success){
             res.statusCode = 400; // bad request;
             res.json({success: false, reason: "User doesn't exist."});
         }else{
-            reset_password_generate_secret(search_condition, (err, result)=>{
+            reset_password_generate_secret({username: result.value.username}, (err, result)=>{
                 if(err != null){
-                    res.statusCode = 400; // bad request;
-                    res.json({success: false, reason: err.message});
+                    next(err);
                 }else{
                     res.statusCode = 200;
                     res.json({success: true, secret: result.secret});
