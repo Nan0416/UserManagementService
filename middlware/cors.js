@@ -1,6 +1,6 @@
 const cors = require('cors');
 
-const whitelist = [];
+const whitelist = require('../config').cors_config.whitelist;
 
 var corsOptionsDelegate = (req, callback) => {
     var corsOptions;

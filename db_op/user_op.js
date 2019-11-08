@@ -9,8 +9,9 @@ const forgetPasswordResetDB = require('../db_model/forget_password_reset_facilit
 
 const user_return_fields = "username"
 // constants and configuration
-const salt_rounds = 10;
-const password_reset_secret_valid_duration = 30 * 60; // seconds;
+
+const salt_rounds = require('../config').secret_config.salt_rounds;
+const password_reset_secret_valid_duration = require('../config').secret_config.password_reset_secret_valid_duration; // seconds;
 
 function register_user(user, password, callback){
     userDB.findOne({username: user.username}, (err, __user)=>{

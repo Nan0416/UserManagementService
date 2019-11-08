@@ -1,9 +1,9 @@
 // 3rd-party libraries
 const jwt=require('jsonwebtoken');
 
-const token_key = "jroewifjoewf213mowief0";
-const token_duration = "1h"
-const public_key = "wewjow324jdie"
+const token_key = require('../config').token_config.token_key;
+const token_duration = require('../config').token_config.token_duration;
+const public_key = require('../config').token_config.public_key;
 
 function generate_token(data, callback){
     data._public = public_key;

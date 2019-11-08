@@ -13,7 +13,7 @@ const loginRoute = require('./router/login');
 
 const app = express();
 const server = http.createServer(app);
-const port = 5010;
+const server_config = require('./config').server_config;
 const domain = "localhost";
 ////////// middleware setup ////////
 
@@ -37,14 +37,14 @@ app.use(urlprefix + '/auth/login', loginRoute);
 mongoose.Promise = bluebird;
 mongoose.set('useCreateIndex', true)
 mongoose.set('useNewUrlParser', true);
-mongodb_url = "mongodb://localhost:27017/cs6400_project";
+let mongodb_url = require('./config').db_config.connection_string;
 
 //mongoose.set('debug', true);
 const connect = mongoose.connect(mongodb_url, {});
 connect.then((db)=>{
     console.log("[mongodb] connected correctly to server");
-    server.listen(port, domain);
-    console.log(`LinuxMonitor server is running at http://${domain}:${port}`);
+    server.listen(server_config.port, server_config.domain);
+    console.log(`LinuxMonitor server is running at http://${server_config.domain}:${server_config.port}`);
 }, (err)=>{
     console.log("[mongodb] connection failed")
     console.log(err);
