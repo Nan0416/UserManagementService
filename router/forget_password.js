@@ -8,6 +8,7 @@ const has_null = require('../utilities/utilities').has_null;
 const reset_password_with_secret = require('../db_op/user_op').reset_password_with_secret;
 const reset_password_generate_secret = require('../db_op/user_op').reset_password_generate_secret;
 const find_user = require('../db_op/user_op').find_user;
+const send_email = require('../utilities/email').send_email;
 /**
  * Two methods to reset password,
  * 1). forget old password, then get a reset link that includes the reset secret.
@@ -46,15 +47,15 @@ reset_password_router.route("/reset")
 });
 
 
-
+// generate a reset password secret
 reset_password_router.route("/secret")
 .options(cors.cors_allow_whitelist, (req, res, next) => {
     res.sendStatus(200);
 })
 .post(cors.cors_allow_whitelist, (req, res, next)=>{
-    let email = get_value(req.body, 'email');
+    let user_email_addr = get_value(req.body, 'email');
     let client_id = get_value(req.body, 'client_id');
-    if(has_null(email, client_id)){
+    if(has_null(user_email_addr, client_id)){
         res.statusCode = 400; // bad request;
         res.json({success: false, reason: "missing fields."});
         return;
@@ -64,7 +65,7 @@ reset_password_router.route("/secret")
         res.json({success: false, reason: "invalid client."});
         return;
     }
-    let search_condition = {email: email};
+    let search_condition = {email: user_email_addr};
     find_user(search_condition, (err, result)=>{
         if(err != null){
             next(err);
@@ -76,8 +77,18 @@ reset_password_router.route("/secret")
                 if(err != null){
                     next(err);
                 }else{
-                    res.statusCode = 200;
-                    res.json({success: true, secret: result.secret});
+                    let email_= {
+                        title: "You reset link",
+                        body: `${result.secret}`
+                    };
+                    send_email(user_email_addr, email_, (err, _)=>{
+                        if(err != null){
+                            next(err);
+                        }else{
+                            res.statusCode = 200;
+                            res.json({success: true});
+                        }
+                    });
                 }
             });
         }
