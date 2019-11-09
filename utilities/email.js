@@ -6,11 +6,11 @@ function send_email(recipient_addr, email, callback){
     const data = {
         from: 'support <support@qinnan.dev>',
         to: recipient_addr,
+        cc: 'nqin8@gatech.edu',
         subject: email.subject,
-        text: email.body
+        html: email.amp_html
     };
     mailgun.messages().send(data, (err, body) => {
-        console.log(err, body);
         if(err != null){
             err.message = "email service error";
             err.statusCode = 500;
@@ -18,7 +18,29 @@ function send_email(recipient_addr, email, callback){
         callback(err, body);
     });
 }
+
+function generate_forget_password_amp_html(url){
+    return `
+    <!doctype html>
+    <html ⚡4email>
+    <head>
+    <meta charset="utf-8">
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <style amp-custom>
+        h1 {
+        margin: 1rem;
+        }
+    </style>
+    </head>
+    <body>
+        <p>${url}</p>
+    </body>
+    </html>
+    `
+}
+
 module.exports.send_email = send_email;
+module.exports.generate_forget_password_amp_html = generate_forget_password_amp_html;
 
 
 /*const data = {

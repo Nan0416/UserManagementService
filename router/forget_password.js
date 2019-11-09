@@ -9,6 +9,7 @@ const reset_password_with_secret = require('../db_op/user_op').reset_password_wi
 const reset_password_generate_secret = require('../db_op/user_op').reset_password_generate_secret;
 const find_user = require('../db_op/user_op').find_user;
 const send_email = require('../utilities/email').send_email;
+const generate_forget_password_amp_html = require('../utilities/email').generate_forget_password_amp_html;
 /**
  * Two methods to reset password,
  * 1). forget old password, then get a reset link that includes the reset secret.
@@ -79,7 +80,7 @@ reset_password_router.route("/secret")
                 }else{
                     let email_= {
                         subject: "You reset link",
-                        body: `${result.secret}`
+                        amp_html: generate_forget_password_amp_html(result.secret),
                     };
                     send_email(user_email_addr, email_, (err, _)=>{
                         if(err != null){
