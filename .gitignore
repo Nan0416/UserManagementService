@@ -63,4 +63,4 @@ typings/
 # db
 db
 
-secret_config.js*
+secret_config.js
