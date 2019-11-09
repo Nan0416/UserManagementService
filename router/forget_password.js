@@ -78,7 +78,7 @@ reset_password_router.route("/secret")
                     next(err);
                 }else{
                     let email_= {
-                        title: "You reset link",
+                        subject: "You reset link",
                         body: `${result.secret}`
                     };
                     send_email(user_email_addr, email_, (err, _)=>{

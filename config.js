@@ -38,3 +38,8 @@ module.exports.token_config = {
     token_duration: "1h",
     public_key: "wewjow324jdie"
 };
+
+module.exports.email_config = {
+    domain: "mg.qinnan.dev",
+    private_api_key: require('./secret_config').email_secret.private_api_key
+}
