@@ -1,3 +1,3 @@
 module.exports.email_secret = {
-    private_api_key: "your private api key",
+    private_api_key: "hello",
 }
